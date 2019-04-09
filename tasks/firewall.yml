@@ -1,0 +1,71 @@
+---
+- name: install apt packages related to firewall
+  apt:
+    pkg:
+      - fail2ban
+      - ufw
+    cache_valid_time: 86400 # 1 day
+
+- name: Enable UFW to allow configuring
+  ufw:
+    state: enabled
+    logging: on
+
+- name: Configure ufw defaults
+  ufw: direction={{ item.direction }} policy={{ item.policy }}
+  with_items:
+    - { direction: 'incoming', policy: 'deny' }
+    - { direction: 'outgoing', policy: 'allow' }
+  notify: restart ufw
+
+- name: Allow all access from whitelist_ips (eg don't rate limit SSH)
+  ufw:
+    rule: allow
+    src: "{{ item }}"
+  with_items: "{{ whitelist_ips }}"
+  notify: restart ufw
+
+- name: Open and limit SSH port
+  ufw:
+    rule: limit
+    port: 22
+    proto: tcp
+  notify: restart ufw
+
+- name: set up ufw logging
+  template:
+    src: 20-ufw.conf.j2
+    dest: /etc/rsyslog.d/20-ufw.conf
+  notify: restart rsyslog
+
+# the fail2ban service won't start if any of the log files it's supposed to be
+# watching are missing (eg in the ufw-port-scan section below)
+- name: Ensure ufw logfile present before installing fail2ban
+  copy:
+    content: ""
+    dest: /var/log/ufw.log
+    force: no
+    owner: syslog
+    group: syslog
+    mode: 0640
+
+- name: install custom fail2ban filters
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/fail2ban/filter.d/{{ item }}"
+  with_items:
+    - ufw-port-scan.conf
+    - repeat-offender.conf
+  notify: restart fail2ban
+
+- name: install fail2ban jail config
+  template:
+    src: jail.local.j2
+    dest: /etc/fail2ban/jail.local
+  notify: restart fail2ban
+
+- name: Enable the fail2ban service
+  systemd:
+    name: fail2ban.service
+    enabled: yes
+    state: started

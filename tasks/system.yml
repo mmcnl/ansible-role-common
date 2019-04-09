@@ -1,0 +1,77 @@
+- name: set hostname
+  hostname:
+    name: "{{ hostname }}"
+
+- name: remove old hostnames
+  lineinfile:
+    path: /etc/hosts
+    # use negative lookahead to find lines that don't match ip followed by
+    # single space then hostname
+    regexp: '^127\.0\.1\.1(?! {{ hostname }})'
+    state: absent
+
+- name: set new hostname
+  lineinfile:
+    path: /etc/hosts
+    # for 127.0.1.1 meaning, see https://askubuntu.com/a/754216
+    line: '127.0.1.1 {{ hostname }}'
+
+- name: set timezone to UTC
+  timezone:
+    name: Etc/UTC
+
+# use cronic to send to syslog and only allow output on errors.
+# http://habilis.net/cronic/
+- name: install cronic wrapper script
+  template:
+    src: cronic.j2
+    dest: /usr/local/bin/cronic
+    mode: 0744
+
+- name: set up /etc/crontab
+  template:
+    src: crontab.j2
+    dest: /etc/crontab
+    mode: 0644
+
+# https://blog.ubuntu.com/2016/01/20/data-driven-analysis-tmp-on-tmpfs
+- name: Mount tmp on RAM based tmpfs
+  tags: fstab
+  mount:
+    src: tmpfs
+    name: /tmp
+    fstype: tmpfs
+    opts: rw,nosuid,nodev
+    state: present
+
+# https://askubuntu.com/a/440349
+- name: reduce tendency to swap
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: '^vm.swappiness='
+    line: vm.swappiness=1
+
+- name: disable execution of unneeded parts of motd
+  file:
+    path: "/etc/update-motd.d/{{ item }}"
+    mode: 0644 # remove executable bit
+  with_items:
+    - 10-help-text
+    - 50-motd-news
+    - 51-cloudguest
+    - 80-livepatch
+    - 95-hwe-eol
+    - 97-overlayroot
+  ignore_errors: yes # some cloud installation images don't have 51-cloudguest
+
+- name: clean up motd
+  lineinfile:
+    path: "/etc/update-motd.d/{{ item }}"
+    line: "exit 0 # added by ansible"
+    state: absent
+  with_items:
+    - 10-help-text
+    - 50-motd-news
+    - 51-cloudguest
+    - 80-livepatch
+  ignore_errors: yes # some cloud installation images don't have 51-cloudguest

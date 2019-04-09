@@ -1,0 +1,17 @@
+---
+- name: Ensure git is installed
+  apt:
+    pkg: git
+    cache_valid_time: 86400 # 1 day
+
+- name: install global git config
+  template:
+    src: gitconfig.j2
+    dest: /etc/gitconfig
+    mode: 0644
+
+- name: ensure diff-highlight is executable
+  file:
+    state: file
+    path: /usr/share/doc/git/contrib/diff-highlight/diff-highlight
+    mode: 0755

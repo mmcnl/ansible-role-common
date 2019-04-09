@@ -1,0 +1,12 @@
+# -*- mode: conf -*-
+# {{ ansible_managed }}
+
+Port 22
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+PermitRootLogin no
+UsePAM yes
+X11Forwarding no
+PrintMotd no
+AcceptEnv LANG LC_*
+Subsystem	sftp	/usr/lib/openssh/sftp-server

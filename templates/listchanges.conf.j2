@@ -1,0 +1,12 @@
+# -*- mode: conf -*-
+# {{ ansible_managed }}
+
+[apt]
+frontend=text
+which=news
+email_address={{ notification_email }}
+email_format=text
+confirm=true
+headers=false
+reverse=false
+save_seen=/var/lib/apt/listchanges.db

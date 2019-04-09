@@ -1,0 +1,4 @@
+# -*- mode: conf -*-
+# {{ ansible_managed }}
+check program ufw with path "/lib/ufw/ufw-init status"
+  if status != 0 for 3 times within 5 cycles then alert

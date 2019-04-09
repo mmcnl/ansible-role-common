@@ -1,0 +1,20 @@
+# -*- mode: shell-script -*-
+# {{ ansible_managed }}
+
+# /etc/crontab: system-wide crontab
+# Unlike any other crontab you don't have to run the `crontab'
+# command to install the new version when you edit this file
+# and files in /etc/cron.d. These files also have username fields,
+# that none of the other crontabs do.
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO={{ notification_email }}
+
+# use cronic to send to syslog and only allow output on errors. http://habilis.net/cronic/
+# m h dom mon dow user	command
+{{ cron_periodic_hourly_minute }} *	* * *	root  cd / && cronic run-parts /etc/cron.hourly
+{{ cron_periodic_daily_minute }} {{ cron_periodic_hour }}	* * *	root	cd / && cronic run-parts /etc/cron.daily
+{{ cron_periodic_weekly_minute }} {{ cron_periodic_hour }}	* * 7	root	cd / && cronic run-parts /etc/cron.weekly
+{{ cron_periodic_monthly_minute }} {{ cron_periodic_hour }}	1 * *	root	cd / && cronic run-parts /etc/cron.monthly
+#

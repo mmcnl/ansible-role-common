@@ -1,0 +1,24 @@
+---
+- name: restart ufw
+  systemd:
+    name: ufw
+    enabled: yes
+    state: restarted
+
+- name: restart sshd
+  systemd:
+    name: sshd
+    enabled: yes
+    state: restarted
+
+- name: restart fail2ban
+  systemd:
+    name: fail2ban
+    enabled: yes
+    state: restarted
+
+- name: restart rsyslog
+  systemd:
+    name: rsyslog
+    enabled: yes
+    state: restarted

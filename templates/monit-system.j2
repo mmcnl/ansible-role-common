@@ -1,0 +1,10 @@
+# -*- mode: conf -*-
+# {{ ansible_managed }}
+
+# https://www.mmonit.com/wiki/Monit/ConfigurationExamples#system
+check system $HOST
+  if memory usage > {{ monit_memory_usage_max }}% for 4 cycles then alert
+  # if swap usage > 60% for 4 cycles then alert
+  if cpu usage (user) > {{ monit_cpu_usage_user_max }}% for 4 cycles then alert
+  if cpu usage (system) > 60% for 4 cycles then alert
+  if cpu usage (wait) > 80% for 4 cycles then alert

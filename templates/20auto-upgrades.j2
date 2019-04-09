@@ -1,0 +1,17 @@
+// {{ ansible_managed }}
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Download-Upgradeable-Packages "1";
+APT::Periodic::AutocleanInterval "30";
+APT::Periodic::Unattended-Upgrade "1";
+APT::Periodic::Verbose "1";
+
+Unattended-Upgrade::Mail "{{ notification_email }}";
+
+// Automatically reboot *WITHOUT CONFIRMATION*
+//  if the file /var/run/reboot-required is found after the upgrade
+Unattended-Upgrade::Automatic-Reboot "true";
+
+// If automatic reboot is enabled and needed, reboot at the specific
+// time instead of immediately
+//  9am UTC => 1am PST, 4am EST
+Unattended-Upgrade::Automatic-Reboot-Time "09:00";

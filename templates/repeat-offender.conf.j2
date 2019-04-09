@@ -1,0 +1,8 @@
+# -*- mode: conf -*-
+# {{ ansible_managed }}
+
+# https://0wned.it/2016/03/21/banning-repeat-offenders-with-fail2ban/
+
+[Definition]
+failregex = fail2ban\.actions\[\d+\]: (WARNING|NOTICE) \[.*\] Unban <HOST>$
+ignoreregex = fail2ban\.actions\[\d+\]: (WARNING|NOTICE) \[repeat-offender\].*$

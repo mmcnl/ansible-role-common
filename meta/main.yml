@@ -1,0 +1,15 @@
+---
+dependencies:
+- role: mmcnl.monit_handlers
+
+galaxy_info:
+  role_name: common
+  author: mmcnl
+  description: "set up basic Ubuntu server"
+  license: MIT
+  min_ansible_version: 2.7
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+  galaxy_tags: []

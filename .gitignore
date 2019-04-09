@@ -1,0 +1,5 @@
+### development artifacts ###
+/TAGS
+.tags
+*.md.temp
+.DS_Store

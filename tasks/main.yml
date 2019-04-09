@@ -1,0 +1,13 @@
+---
+- import_tasks: packages.yml
+  tags: packages
+- import_tasks: sshd.yml
+  tags: sshd
+- import_tasks: firewall.yml
+  tags: firewall
+- import_tasks: system.yml
+  tags: system
+- import_tasks: monit.yml
+  tags: monit
+- import_tasks: git.yml
+  tags: git

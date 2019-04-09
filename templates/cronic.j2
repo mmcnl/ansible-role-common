@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# NB: changes by mmcnl: added logging, removed trace. original at http://habilis.net/cronic/
+
+set -eu
+
+TMP=$(mktemp -d)
+OUT=$TMP/cronic.out
+ERR=$TMP/cronic.err
+
+set +e
+"$@" >$OUT 2>$ERR
+RESULT=$?
+set -e
+
+logger "################ BEGIN cronic run at $(date -u) ################"
+cat $OUT | logger
+cat $ERR | logger
+logger "################ END cronic run at $(date -u) ################"
+
+if [ $RESULT -ne 0 -o -s "$ERR" ]
+    then
+    echo "Cronic detected failure or error output for the command:"
+    echo "$@"
+    echo
+    echo "RESULT CODE: $RESULT"
+    echo
+    echo "ERROR OUTPUT:"
+    cat "$ERR"
+    echo
+    echo "STANDARD OUTPUT:"
+    cat "$OUT"
+fi
+
+rm -rf "$TMP"

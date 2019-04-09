@@ -1,0 +1,29 @@
+---
+- name: ensure monit config dir exists
+  file:
+    path: /etc/monit/conf.d
+    state: directory
+
+- name: watch common services with monit
+  template:
+    src: "monit-{{ item }}.j2"
+    dest: "/etc/monit/conf.d/{{ item }}"
+    mode: 0600
+  with_items:
+    - crond
+    - filesystem
+    - sshd
+    - system
+    - ufw
+  notify: reload monit
+
+# because of a known issue with monit's check program function that we're using
+# to confirm that ufw is active ( look for zombie in this section:
+# https://mmonit.com/monit/documentation/monit.html#PROGRAM-STATUS-TEST ), there
+# will always be 1 harmless but unsightly zombie process hanging around. so,
+# remove this from the motd login message to avoid raising undue alarm
+- name: remove possibly confusing note about zombie process
+  lineinfile:
+    path: /usr/share/landscape/landscape-sysinfo.wrapper
+    regexp: '^\s+/usr/bin/landscape-sysinfo'
+    line: "      /usr/bin/landscape-sysinfo | grep -v '1 zombie process'"

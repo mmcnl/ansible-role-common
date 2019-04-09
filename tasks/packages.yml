@@ -1,0 +1,31 @@
+- name: remove unwanted apt or deb packages
+  apt:
+    pkg: "{{ packages_to_remove }}"
+    state: absent
+
+- name: install misc apt packages
+  apt:
+    pkg: "{{ (base_packages + additional_packages) | difference(packages_to_skip) }}"
+    cache_valid_time: 86400 # 1 day
+
+- name: Ensure unattended-upgrades is enabled
+  template:
+    src: 20auto-upgrades.j2
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+
+- name: Install listchanges.conf
+  template:
+    src: listchanges.conf.j2
+    dest: /etc/apt/listchanges.conf
+
+- name: Install misc deb packages
+  apt:
+    deb: "{{ item }}"
+  with_items: "{{ (base_deb_packages + additional_deb_packages) | difference(deb_packages_to_skip) }}"
+
+- name: install speedtest
+  get_url:
+    url: "{{ speedtest_download_url }}"
+    dest: /usr/local/bin/speedtest-cli
+    checksum: "{{ speedtest_checksum }}"
+    mode: 0755
