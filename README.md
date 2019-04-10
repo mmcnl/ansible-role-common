@@ -3,7 +3,7 @@
     - hosts: all
       tasks:
         - import_role:
-            name: common
+            name: mmcnl.common
           vars:
             notification_email: admin@example.com
             hostname: example.com
