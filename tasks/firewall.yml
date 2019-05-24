@@ -14,8 +14,10 @@
 - name: Configure ufw defaults
   ufw: direction={{ item.direction }} policy={{ item.policy }}
   with_items:
-    - { direction: 'incoming', policy: 'deny' }
-    - { direction: 'outgoing', policy: 'allow' }
+    - direction: incoming
+      policy: deny
+    - direction: outgoing
+      policy: allow
   notify: restart ufw
 
 - name: Allow all access from whitelist_ips (eg don't rate limit SSH)
@@ -64,8 +66,15 @@
     dest: /etc/fail2ban/jail.local
   notify: restart fail2ban
 
+- name: install script to show status of all fail2ban jails
+  template:
+    src: f2b-status-all.j2
+    dest: /usr/local/bin/f2b-status-all
+    mode: 0744
+
 - name: Enable the fail2ban service
   systemd:
     name: fail2ban.service
     enabled: yes
     state: started
+    daemon_reload: yes

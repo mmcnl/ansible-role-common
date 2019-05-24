@@ -1,3 +1,4 @@
+---
 - name: set hostname
   hostname:
     name: "{{ hostname }}"
@@ -5,20 +6,38 @@
 - name: remove old hostnames
   lineinfile:
     path: /etc/hosts
-    # use negative lookahead to find lines that don't match ip followed by
-    # single space then hostname
-    regexp: '^127\.0\.1\.1(?! {{ hostname }})'
+    # use negative lookahead to find lines that don't match ip followed by tab
+    # then hostname
+    regexp: '^127\.0\.1\.1(?!	{{ hostname }})'
     state: absent
+  tags: etc_hosts
 
 - name: set new hostname
   lineinfile:
     path: /etc/hosts
+    regexp: '^127\.0\.1\.1	{{ hostname }}'
     # for 127.0.1.1 meaning, see https://askubuntu.com/a/754216
-    line: '127.0.1.1 {{ hostname }}'
+    line: '127.0.1.1	{{ hostname }}'
+  tags: etc_hosts
 
 - name: set timezone to UTC
   timezone:
     name: Etc/UTC
+
+- name: use CloudFlare DNS
+  replace:
+    path: /etc/systemd/resolved.conf
+    regexp: "^#?DNS=.*"
+    replace: "DNS=1.0.0.1 1.1.1.1"
+  notify: restart systemd-resolved
+
+# https://askubuntu.com/questions/1058750/new-alert-keeps-showing-up-server-returned-error-nxdomain-mitigating-potential
+- name: fix systemd-resolved symlink
+  file:
+    src: /run/systemd/resolve/resolv.conf
+    dest: /etc/resolv.conf # the symlink
+    state: link
+    force: yes
 
 # use cronic to send to syslog and only allow output on errors.
 # http://habilis.net/cronic/
@@ -50,6 +69,14 @@
     path: /etc/sysctl.conf
     regexp: '^vm.swappiness='
     line: vm.swappiness=1
+
+- name: add figlet hostname banner
+  blockinfile:
+    path: /etc/update-motd.d/00-header
+    block: |
+      tput -T xterm setaf 4 # blue
+      figlet -k {{ login_banner_header_string }}
+      tput -T xterm sgr0 # clear fg color
 
 - name: disable execution of unneeded parts of motd
   file:

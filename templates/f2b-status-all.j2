@@ -1,0 +1,9 @@
+#!/bin/bash
+# -*- mode: shell-script -*-
+# {{ ansible_managed }}
+
+# Show status of all fail2ban jails
+
+set -o errexit -o nounset
+
+fail2ban-client status | sed -n 's/,//g;s/.*Jail list://p' | xargs -n1 fail2ban-client status

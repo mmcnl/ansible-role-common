@@ -1,8 +1,11 @@
+---
 base_packages:
   - aptitude
   - apt-listchanges
   - build-essential
   - chrony
+  - figlet
+  - glances
   - git
   - htop
   - ncdu
@@ -17,9 +20,8 @@ packages_to_skip: []
 packages_to_remove: []
 
 base_deb_packages:
-  - https://github.com/sharkdp/bat/releases/download/v0.9.0/bat-musl_0.9.0_amd64.deb
-  - https://github.com/sharkdp/fd/releases/download/v7.2.0/fd-musl_7.2.0_amd64.deb
-  - https://github.com/sharkdp/hyperfine/releases/download/v1.4.0/hyperfine-musl_1.4.0_amd64.deb
+  - https://github.com/sharkdp/bat/releases/download/v0.11.0/bat-musl_0.11.0_amd64.deb
+  - https://github.com/sharkdp/fd/releases/download/v7.3.0/fd-musl_7.3.0_amd64.deb
 additional_deb_packages: []
 deb_packages_to_skip: []
 

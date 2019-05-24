@@ -22,3 +22,10 @@
     name: rsyslog
     enabled: yes
     state: restarted
+
+- name: restart systemd-resolved
+  systemd:
+    name: systemd-resolved
+    enabled: yes
+    state: restarted
+    daemon_reload: yes
