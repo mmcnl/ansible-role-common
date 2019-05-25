@@ -74,7 +74,7 @@
   blockinfile:
     path: /etc/update-motd.d/00-header
     block: |
-      tput -T xterm setaf 4 # blue
+      tput -T xterm setaf 6 # cyan
       figlet -k {{ login_banner_header_string }}
       tput -T xterm sgr0 # clear fg color
 
