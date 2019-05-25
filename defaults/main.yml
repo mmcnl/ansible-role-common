@@ -28,8 +28,10 @@ deb_packages_to_skip: []
 speedtest_download_url: https://raw.githubusercontent.com/sivel/speedtest-cli/681cdf20a5fe774ba3aefedd0cd88cbff5384439/speedtest.py
 speedtest_checksum: sha256:78167ef0ccb4cc7b33c7314da395c7740a91e5f7f4e0d761c48039891f943b47
 
-monit_cpu_usage_user_max: 80
+monit_cpu_usage_max: 80
 monit_memory_usage_max: 80
+monit_system_alert_cycles: 10
+monit_filesystem_usage_max: 80
 
 cron_periodic_hour: 9 # 09 UTC => 1am Pacific, 4am Eastern
 cron_periodic_hourly_minute: 17
