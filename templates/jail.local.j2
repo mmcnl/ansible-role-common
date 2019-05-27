@@ -20,14 +20,14 @@ banaction = ufw
 
 # https://serverfault.com/q/629709
 [ufw-port-scan]
-enabled   = true
+enabled   = {{ fail2ban_enable_ufw_port_scan }}
 maxretry  = 10
 filter    = ufw-port-scan
 logpath   = /var/log/ufw.log
 
 # https://0wned.it/2016/03/21/banning-repeat-offenders-with-fail2ban/
 [repeat-offender]
-enabled = true
+enabled = {{ fail2ban_enable_repeat_offender }}
 filter = repeat-offender
 port = all
 banaction = iptables-allports

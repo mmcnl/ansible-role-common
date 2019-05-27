@@ -20,13 +20,6 @@
       policy: allow
   notify: restart ufw
 
-- name: Allow all access from whitelist_ips (eg don't rate limit SSH)
-  ufw:
-    rule: allow
-    src: "{{ item }}"
-  with_items: "{{ whitelist_ips }}"
-  notify: restart ufw
-
 - name: Open and limit SSH port
   ufw:
     rule: limit
@@ -34,6 +27,16 @@
     proto: tcp
   notify: restart ufw
 
+- name: Allow unlimited ssh access from whitelist_ips
+  ufw:
+    rule: allow
+    src: "{{ item }}"
+    port: 22
+    proto: tcp
+  with_items: "{{ whitelist_ips }}"
+  notify: restart ufw
+
+# https://askubuntu.com/a/728657
 - name: set up ufw logging
   template:
     src: 20-ufw.conf.j2

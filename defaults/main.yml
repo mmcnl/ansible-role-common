@@ -5,7 +5,6 @@ base_packages:
   - build-essential
   - chrony
   - figlet
-  - glances
   - git
   - htop
   - ncdu
@@ -38,3 +37,6 @@ cron_periodic_hourly_minute: 17
 cron_periodic_daily_minute: 25
 cron_periodic_weekly_minute: 47
 cron_periodic_monthly_minute: 52
+
+fail2ban_enable_ufw_port_scan: false
+fail2ban_enable_repeat_offender: false

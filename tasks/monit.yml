@@ -15,13 +15,15 @@
     - sshd
     - system
     - ufw
+    - fail2ban
   notify: reload monit
 
 # because of a known issue with monit's check program function that we're using
 # to confirm that ufw is active ( look for zombie in this section:
 # https://mmonit.com/monit/documentation/monit.html#PROGRAM-STATUS-TEST ), there
 # will always be 1 harmless but unsightly zombie process hanging around. so,
-# remove this from the motd login message to avoid raising undue alarm
+# remove this from the motd login message to avoid raising undue alarm. see also
+# https://bitbucket.org/tildeslash/monit/issues/242/running-shell-script-with-check-program
 - name: remove possibly confusing note about zombie process
   lineinfile:
     path: /usr/share/landscape/landscape-sysinfo.wrapper

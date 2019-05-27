@@ -5,7 +5,8 @@ Port 22
 PasswordAuthentication no
 ChallengeResponseAuthentication no
 PermitRootLogin no
-UsePAM yes
+PermitEmptyPasswords no
+UsePAM yes # https://serverfault.com/a/669464/319087
 X11Forwarding no
 PrintMotd no
 AcceptEnv LANG LC_*
