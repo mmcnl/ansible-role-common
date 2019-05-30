@@ -26,6 +26,6 @@
 # https://bitbucket.org/tildeslash/monit/issues/242/running-shell-script-with-check-program
 - name: remove possibly confusing note about zombie process
   lineinfile:
-    path: /usr/share/landscape/landscape-sysinfo.wrapper
+    path: /etc/update-motd.d/50-landscape-sysinfo
     regexp: '^\s+/usr/bin/landscape-sysinfo'
     line: "      /usr/bin/landscape-sysinfo | grep -v '1 zombie process'"
