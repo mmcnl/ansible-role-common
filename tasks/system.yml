@@ -8,16 +8,16 @@
     path: /etc/hosts
     # use negative lookahead to find lines that don't match ip followed by tab
     # then hostname
-    regexp: '^127\.0\.1\.1(?!	{{ hostname }})'
+    regexp: '^127\.0\.1\.1(?!	{{ hostname }})' # noqa 203 (tab ok here)
     state: absent
   tags: etc_hosts
 
 - name: set new hostname
   lineinfile:
     path: /etc/hosts
-    regexp: '^127\.0\.1\.1	{{ hostname }}'
+    regexp: '^127\.0\.1\.1	{{ hostname }}' # noqa 203
     # for 127.0.1.1 meaning, see https://askubuntu.com/a/754216
-    line: '127.0.1.1	{{ hostname }}'
+    line: '127.0.1.1	{{ hostname }}' # noqa 203
   tags: etc_hosts
 
 - name: set timezone to UTC
