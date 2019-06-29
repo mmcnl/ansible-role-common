@@ -1,0 +1,35 @@
+---
+# https://askubuntu.com/questions/1028633/host-name-reverts-to-old-name-after-reboot-in-18-04-lts
+- name: check if /etc/cloud/cloud.cfg exists
+  stat:
+    path: /etc/cloud/cloud.cfg
+  register: cloud_cfg
+
+- name: ensure hostname is not changed by cloud-init
+  lineinfile:
+    path: /etc/cloud/cloud.cfg
+    regexp: '^preserve_hostname*'
+    line: 'preserve_hostname: true'
+  when: cloud_cfg.stat.exists
+  tags: debug
+
+- name: set hostname
+  hostname:
+    name: "{{ hostname }}"
+
+- name: remove old hostnames
+  lineinfile:
+    path: /etc/hosts
+    # use negative lookahead to find lines that don't match ip followed by tab
+    # then hostname
+    regexp: '^127\.0\.1\.1(?!	{{ hostname }})' # noqa 203 (tab ok here)
+    state: absent
+  tags: etc_hosts
+
+- name: set new hostname
+  lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.1\.1	{{ hostname }}' # noqa 203
+    # for 127.0.1.1 meaning, see https://askubuntu.com/a/754216
+    line: '127.0.1.1	{{ hostname }}' # noqa 203
+  tags: etc_hosts

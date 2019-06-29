@@ -1,0 +1,21 @@
+---
+- name: add figlet hostname banner
+  blockinfile:
+    path: /etc/update-motd.d/00-header
+    block: |
+      tput -T xterm setaf 4 # blue
+      figlet -w 72 -c {{ login_banner_header_string }}
+      tput -T xterm sgr0 # clear fg color
+
+- name: disable execution of unneeded parts of motd
+  file:
+    path: "/etc/update-motd.d/{{ item }}"
+    mode: 0644 # remove executable bit
+  with_items:
+    - 10-help-text
+    - 50-motd-news
+    - 51-cloudguest
+    - 80-livepatch
+    - 95-hwe-eol
+    - 97-overlayroot
+  ignore_errors: yes # some cloud installation images don't have 51-cloudguest

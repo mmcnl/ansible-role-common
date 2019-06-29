@@ -8,6 +8,18 @@
 - import_tasks: firewall.yml
   tags: firewall
 
+- import_tasks: hostname.yml
+  tags: hostname
+
+- import_tasks: dns.yml
+  tags: dns
+
+- import_tasks: cron.yml
+  tags: cron
+
+- import_tasks: motd.yml
+  tags: motd
+
 - import_tasks: system.yml
   tags: system
 

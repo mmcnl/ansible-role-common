@@ -9,7 +9,7 @@
 - name: Enable UFW to allow configuring
   ufw:
     state: enabled
-    logging: on
+    logging: 'on'
 
 - name: Configure ufw defaults
   ufw: direction={{ item.direction }} policy={{ item.policy }}
@@ -23,7 +23,7 @@
 - name: Open and limit SSH port
   ufw:
     rule: limit
-    port: 22
+    port: '22'
     proto: tcp
   notify: restart ufw
 
@@ -31,7 +31,7 @@
   ufw:
     rule: allow
     src: "{{ item }}"
-    port: 22
+    port: '22'
     proto: tcp
   with_items: "{{ whitelist_ips }}"
   notify: restart ufw

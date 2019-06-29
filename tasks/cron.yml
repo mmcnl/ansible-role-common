@@ -1,0 +1,14 @@
+---
+# use cronic to send to syslog and only allow output on errors.
+# http://habilis.net/cronic/
+- name: install cronic wrapper script
+  template:
+    src: cronic.j2
+    dest: /usr/local/bin/cronic
+    mode: 0744
+
+- name: set up /etc/crontab
+  template:
+    src: crontab.j2
+    dest: /etc/crontab
+    mode: 0644

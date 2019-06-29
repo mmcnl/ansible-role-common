@@ -1,0 +1,15 @@
+---
+- name: use CloudFlare DNS
+  replace:
+    path: /etc/systemd/resolved.conf
+    regexp: "^#?DNS=.*"
+    replace: "DNS=1.0.0.1 1.1.1.1"
+  notify: restart systemd-resolved
+
+# https://askubuntu.com/questions/1058750/new-alert-keeps-showing-up-server-returned-error-nxdomain-mitigating-potential
+- name: fix systemd-resolved symlink
+  file:
+    src: /run/systemd/resolve/resolv.conf
+    dest: /etc/resolv.conf # the symlink
+    state: link
+    force: yes
