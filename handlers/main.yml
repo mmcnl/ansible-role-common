@@ -29,3 +29,10 @@
     enabled: yes
     state: restarted
     daemon_reload: yes
+
+- name: restart systemd-journald
+  systemd:
+    name: systemd-journald
+    enabled: yes
+    state: restarted
+    daemon_reload: yes

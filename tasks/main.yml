@@ -1,30 +1,30 @@
 ---
 - import_tasks: packages.yml
-  tags: packages
+  tags: common_packages
 
 - import_tasks: sshd.yml
-  tags: sshd
+  tags: common_sshd
 
 - import_tasks: firewall.yml
-  tags: firewall
+  tags: common_firewall
 
 - import_tasks: hostname.yml
-  tags: hostname
+  tags: common_hostname
 
 - import_tasks: dns.yml
-  tags: dns
+  tags: common_dns
 
 - import_tasks: cron.yml
-  tags: cron
+  tags: common_cron
 
 - import_tasks: motd.yml
-  tags: motd
+  tags: common_motd
 
 - import_tasks: system.yml
-  tags: system
+  tags: common_system
 
 - import_tasks: monit.yml
-  tags: monit
+  tags: common_monit
 
 - import_tasks: git.yml
-  tags: git
+  tags: common_git

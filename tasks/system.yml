@@ -13,6 +13,14 @@
     opts: rw,nosuid,nodev
     state: present
 
+- name: make journald rate limiting less strict
+  blockinfile:
+    path: /etc/systemd/journald.conf
+    block: |
+      RateLimitInterval=30s
+      RateLimitBurst=5000
+  notify: restart systemd-journald
+
 # https://askubuntu.com/a/440349
 - name: reduce tendency to swap
   lineinfile:
@@ -25,3 +33,11 @@
     path: "/etc/cron.daily/mlocate"
     state: file
     mode: "+x"
+
+- name: disable unneeded services
+  systemd:
+    name: "{{ item }}"
+    enabled: no
+    state: stopped
+  with_items: "{{ systemd_services_to_disable }}"
+  ignore_errors: yes

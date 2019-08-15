@@ -19,3 +19,9 @@
     - 95-hwe-eol
     - 97-overlayroot
   ignore_errors: yes # some cloud installation images don't have 51-cloudguest
+
+- name: disable unneeded motd-news service
+  systemd:
+    name: motd-news
+    state: stopped
+    enabled: no

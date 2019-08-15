@@ -4,6 +4,5 @@
 # https://www.mmonit.com/wiki/Monit/ConfigurationExamples#system
 check system $HOST
   if memory usage > {{ monit_memory_usage_max }}% for {{ monit_system_alert_cycles }} cycles then alert
-  if cpu usage (user) > {{ monit_cpu_usage_max }}% for {{ monit_system_alert_cycles }} cycles then alert
-  if cpu usage (system) > {{ monit_cpu_usage_max }}% for {{ monit_system_alert_cycles }} cycles then alert
-  if cpu usage (wait) > {{ monit_cpu_usage_max }}% for {{ monit_system_alert_cycles }} cycles then alert
+  # FIXME: update to loadavg per core when monit 5.26 available
+  if cpu usage > {{ monit_cpu_usage_max }}% for {{ monit_system_alert_cycles }} cycles then alert

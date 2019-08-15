@@ -7,8 +7,10 @@ base_packages:
   - figlet
   - git
   - htop
+  - libpcre2-8-0 # for ripgrep
+  - lnav
   - ncdu
-  - silversearcher-ag
+  - p7zip-full
   - tree
   - unattended-upgrades
   - unzip
@@ -16,11 +18,16 @@ base_packages:
   - zip
 additional_packages: []
 packages_to_skip: []
-packages_to_remove: []
+packages_to_remove:
+  - whoopsie
+systemd_services_to_disable:
+  - cups
+  - cups-browsed
 
 base_deb_packages:
   - https://github.com/sharkdp/bat/releases/download/v0.11.0/bat-musl_0.11.0_amd64.deb
   - https://github.com/sharkdp/fd/releases/download/v7.3.0/fd-musl_7.3.0_amd64.deb
+  - https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb
 additional_deb_packages: []
 deb_packages_to_skip: []
 
@@ -31,6 +38,7 @@ monit_cpu_usage_max: 80
 monit_memory_usage_max: 80
 monit_system_alert_cycles: 10
 monit_filesystem_usage_max: 80
+# monit_loadavg_per_core_max: 1.5 # FIXME: enable when monit >= 5.26.0 is available via apt
 
 cron_periodic_hour: 9 # 09 UTC => 1am Pacific, 4am Eastern
 cron_periodic_hourly_minute: 17
