@@ -5,9 +5,9 @@
 # A host is banned if it has generated "maxretry" during the last "findtime"
 # seconds.
 maxretry = 5
-findtime = 3600
+findtime = 600
 # "bantime" is the number of seconds that a host is banned.
-bantime  = 86400 # 1 day
+bantime  = 600 # 10 minutes
 
 # "ignoreip" can be an IP address, a CIDR mask or a DNS host. Fail2ban will not
 # ban a host which matches an address in this list. Several addresses can be
@@ -21,7 +21,9 @@ banaction = ufw
 # https://serverfault.com/q/629709
 [ufw-port-scan]
 enabled   = {{ fail2ban_enable_ufw_port_scan }}
+port = all
 maxretry  = 10
+findtime = 3600
 filter    = ufw-port-scan
 logpath   = /var/log/ufw.log
 
@@ -32,7 +34,7 @@ filter = repeat-offender
 port = all
 banaction = iptables-allports
 logpath = /var/log/fail2ban.log
-# Repeat offender if previously banned 2 times within 5 days
-maxretry = 2
-findtime = 432000
-bantime = 864000 # 10 days
+# Repeat offender if banned 3 times within 3 days
+maxretry = 3
+findtime =  259200 # 3 days
+bantime = 31556952 # 1 year
