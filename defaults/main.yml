@@ -25,8 +25,8 @@ systemd_services_to_disable:
   - cups-browsed
 
 base_deb_packages:
-  - https://github.com/sharkdp/bat/releases/download/v0.11.0/bat-musl_0.11.0_amd64.deb
-  - https://github.com/sharkdp/fd/releases/download/v7.3.0/fd-musl_7.3.0_amd64.deb
+  - https://github.com/sharkdp/bat/releases/download/v0.12.1/bat-musl_0.12.1_amd64.deb
+  - https://github.com/sharkdp/fd/releases/download/v7.4.0/fd-musl_7.4.0_amd64.deb
   - https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb
 additional_deb_packages: []
 deb_packages_to_skip: []
@@ -36,8 +36,8 @@ speedtest_checksum: sha256:78167ef0ccb4cc7b33c7314da395c7740a91e5f7f4e0d761c4803
 
 monit_cpu_usage_max: 80
 monit_memory_usage_max: 80
-monit_system_alert_cycles: 10
 monit_filesystem_usage_max: 80
+monit_system_alert_cycles: 10
 # monit_loadavg_per_core_max: 1.5 # FIXME: enable when monit >= 5.26.0 is available via apt
 
 cron_periodic_hour: 9 # 09 UTC => 1am Pacific, 4am Eastern
@@ -46,5 +46,5 @@ cron_periodic_daily_minute: 25
 cron_periodic_weekly_minute: 47
 cron_periodic_monthly_minute: 52
 
-fail2ban_enable_ufw_port_scan: false
-fail2ban_enable_repeat_offender: false
+fail2ban_enable_ufw_port_scan: yes
+fail2ban_enable_repeat_offender: yes
