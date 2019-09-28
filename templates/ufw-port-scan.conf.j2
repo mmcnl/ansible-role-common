@@ -4,4 +4,7 @@
 # https://serverfault.com/q/629709
 [Definition]
 failregex = .*\[UFW BLOCK\] IN=.* SRC=<HOST>
-ignoreregex =
+
+{% if knockd_enabled %}
+ignoreregex = .*\[UFW BLOCK\] IN=.* DPT=({{ knockd_sequence.replace(',', '|') }})
+{% endif %}

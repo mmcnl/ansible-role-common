@@ -1,0 +1,11 @@
+# -*- mode: shell-script -*-
+# {{ ansible_managed }}
+
+# control if we start knockd at init or not
+# 1 = start
+# anything else = don't start
+# PLEASE EDIT /etc/knockd.conf BEFORE ENABLING
+START_KNOCKD={{ '1' if knockd_enabled else '0'}}
+
+# command line options
+KNOCKD_OPTS="-i {{ knockd_ethernet_device }}"

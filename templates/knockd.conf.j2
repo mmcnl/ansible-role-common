@@ -1,0 +1,26 @@
+# -*- mode: conf-space -*-
+# {{ ansible_managed }}
+
+# https://joost.vunderink.net/blog/2015/05/07/hiding-your-sshd-with-ufw-and-knockd-on-ubuntu/
+# https://github.com/jvinet/knock/blob/master/doc/knockd.1.in
+
+[options]
+UseSyslog
+
+[SSH]
+sequence      = {{ knockd_sequence }}
+
+# Time to wait for a sequence to complete in seconds. If the time elapses before
+# the knock is complete, it is discarded.
+seq_timeout   = 5
+
+# Specify the command to be executed when a client makes the correct port-knock.
+start_command = ufw insert 1 allow from %IP% to any port {{ sshd_port }}
+tcpflags      = syn
+
+# Time to wait (in seconds) between Start_Command and Stop_Command.
+cmd_timeout   = {{ knockd_timeout_sec }}
+
+# command to be executed when Cmd_Timeout seconds have passed since
+# Start_Command has been executed.
+stop_command  = ufw delete allow from %IP% to any port {{ sshd_port }}

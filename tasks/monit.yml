@@ -13,6 +13,7 @@
     - crond
     - filesystem
     - sshd
+    - knockd
     - system
     - ufw
     - fail2ban

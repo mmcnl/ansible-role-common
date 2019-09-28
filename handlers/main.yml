@@ -17,6 +17,12 @@
     enabled: yes
     state: restarted
 
+- name: restart or disable knockd
+  systemd:
+    name: knockd
+    enabled: "{{ knockd_enabled }}"
+    state: "{{ 'restarted' if knockd_enabled else 'stopped' }}"
+
 - name: restart rsyslog
   systemd:
     name: rsyslog

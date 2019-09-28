@@ -1,0 +1,32 @@
+---
+- name: Enable UFW to allow configuring
+  ufw:
+    state: enabled
+    logging: 'on'
+
+- name: Configure ufw defaults
+  ufw:
+    direction: "{{ item.direction }}"
+    policy: "{{ item.policy }}"
+  with_items:
+    - direction: incoming
+      policy: deny
+    - direction: outgoing
+      policy: allow
+  notify: restart ufw
+
+- name: Allow multicast on local network
+  ufw:
+    comment: allow multicast on local network
+    rule: allow
+    to_ip: '224.0.0.0/24'
+    proto: 'igmp' # https://superuser.com/a/865317/646549
+  notify: restart ufw
+
+# https://askubuntu.com/a/728657
+- name: set up ufw logging
+  template:
+    src: 20-ufw.conf.j2
+    dest: /etc/rsyslog.d/20-ufw.conf
+  notify: restart rsyslog
+

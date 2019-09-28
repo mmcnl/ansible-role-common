@@ -1,7 +1,7 @@
 # -*- mode: conf -*-
 # {{ ansible_managed }}
 
-Port 22
+Port {{ sshd_port }}
 PasswordAuthentication no
 ChallengeResponseAuthentication no
 PermitRootLogin no

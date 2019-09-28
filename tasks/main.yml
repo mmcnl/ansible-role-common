@@ -2,11 +2,16 @@
 - import_tasks: packages.yml
   tags: common_packages
 
+- import_tasks: ufw.yml
+  tags:
+    - common_ufw
+    - ufw
+
 - import_tasks: sshd.yml
   tags: common_sshd
 
-- import_tasks: firewall.yml
-  tags: common_firewall
+- import_tasks: fail2ban.yml
+  tags: common_fail2ban
 
 - import_tasks: hostname.yml
   tags: common_hostname
