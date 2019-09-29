@@ -3,6 +3,20 @@
 
 # https://www.mmonit.com/wiki/Monit/ConfigurationExamples#system
 check system $HOST
-  if memory usage > {{ monit_memory_usage_max }}% for {{ monit_system_alert_cycles }} cycles then exec "/bin/bash -c '/usr/bin/top -n 1 -b -o %MEM | head -n40 >> /var/log/monit.log'"
+
+{% if monit_memory_usage_max_pct %}
+
+  if memory usage > {{ monit_memory_usage_max_pct }}% for {{ monit_system_alert_cycles }} cycles then exec "/bin/bash -c '/usr/bin/top -n 1 -b -o %MEM | head -n40 >> /var/log/monit.log'"
+
+{% endif %}
+
+{% if monit_cpu_usage_max_pct %}
   # FIXME: update to loadavg per core when monit 5.26 available
-  if cpu usage > {{ monit_cpu_usage_max }}% for {{ monit_system_alert_cycles }} cycles then exec "/bin/bash -c '/usr/bin/top -n 1 -b -o %CPU | head -n40 >> /var/log/monit.log'"
+  if cpu usage > {{ monit_cpu_usage_max_pct }}% for {{ monit_system_alert_cycles }} cycles then exec "/bin/bash -c '/usr/bin/top -n 1 -b -o %CPU | head -n40 >> /var/log/monit.log'"
+
+{% endif %}
+{% if monit_cpu_usage_min_pct %}
+
+if cpu usage < {{ monit_cpu_usage_min_pct }}% for 30 cycles then alert
+
+{% endif %}
