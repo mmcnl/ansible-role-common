@@ -18,10 +18,22 @@
     src: listchanges.conf.j2
     dest: /etc/apt/listchanges.conf
 
+- name: decide which packages to install
+  set_fact:
+    deb_packages_to_install: "{{ (base_deb_packages + additional_deb_packages) | difference(deb_packages_to_skip) }}"
+
+- name: download packages and check file integrity
+  get_url:
+    url: "{{ item.url }}"
+    checksum: "{{ item.checksum }}"
+    dest: "/usr/local/src/{{ item.url | basename }}"
+    mode: 0755
+  with_items: "{{ deb_packages_to_install }}"
+
 - name: Install misc deb packages
   apt:
-    deb: "{{ item }}"
-  with_items: "{{ (base_deb_packages + additional_deb_packages) | difference(deb_packages_to_skip) }}"
+    deb: "/usr/local/src/{{ item.url | basename }}"
+  with_items: "{{ deb_packages_to_install }}"
 
 - name: install speedtest
   get_url:
