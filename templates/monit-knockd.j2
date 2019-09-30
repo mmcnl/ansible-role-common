@@ -1,4 +1,8 @@
 # -*- mode: conf -*-
 # {{ ansible_managed }}
 
+{% if knockd_enabled %}
+
 check process knockd matching "knockd"
+
+{% endif %}
