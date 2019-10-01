@@ -10,6 +10,9 @@
 - import_tasks: sshd.yml
   tags: common_sshd
 
+- import_tasks: knockd.yml
+  tags: common_knockd
+
 - import_tasks: fail2ban.yml
   tags: common_fail2ban
 

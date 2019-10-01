@@ -1,0 +1,37 @@
+---
+- name: set up knockd
+  when: knockd_enabled
+  block:
+    - name: enable knockd
+      template:
+        src: etc_default_knockd.j2
+        dest: /etc/default/knockd
+        mode: 0644
+      notify:
+        - restart knockd
+
+    - name: install knockd config
+      template:
+        src: knockd.conf.j2
+        dest: /etc/knockd.conf
+        mode: 0600
+      notify:
+        - restart knockd
+
+- name: remove knockd
+  when: not knockd_enabled
+  block:
+    - name: purge knockd config files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/knockd.conf
+        - /etc/default/knockd
+        - /etc/monit/conf.d/knockd
+
+    - name: disable knockd
+      systemd:
+        name: knockd
+        enabled: no
+        state: stopped

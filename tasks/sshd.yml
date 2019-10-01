@@ -28,18 +28,3 @@
   notify: restart ufw
   tags: ufw
 
-- name: enable or disable knockd
-  template:
-    src: etc_default_knockd.j2
-    dest: /etc/default/knockd
-    mode: 0644
-  notify:
-    - restart or disable knockd
-
-- name: Install knockd config
-  template:
-    src: knockd.conf.j2
-    dest: /etc/knockd.conf
-    mode: 0600
-  notify:
-    - restart or disable knockd
