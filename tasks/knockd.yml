@@ -35,3 +35,8 @@
         name: knockd
         enabled: no
         state: stopped
+
+    - name: reload monit
+      systemd:
+        name: monit
+        state: reloaded
