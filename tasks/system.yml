@@ -13,12 +13,16 @@
     opts: rw,nosuid,nodev
     state: present
 
-- name: make journald rate limiting less strict
+- name: add custom journald settings
   blockinfile:
     path: /etc/systemd/journald.conf
     block: |
+      # make rate limiting less strict
       RateLimitInterval=30s
       RateLimitBurst=5000
+
+      # https://www.freedesktop.org/software/systemd/man/journald.conf.html
+      SystemMaxUse=1000M
   notify: restart systemd-journald
 
 # https://askubuntu.com/a/440349
