@@ -68,3 +68,5 @@ knockd_enabled: no
 knockd_sequence: '10001,20002,30003'
 knockd_ethernet_device: eth0
 knockd_timeout_sec: 20 # how long to allow new connections from user's IP
+
+systemd_journal_max_use: 2000M # 2 GB

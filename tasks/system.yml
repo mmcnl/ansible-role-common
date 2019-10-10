@@ -22,7 +22,7 @@
       RateLimitBurst=5000
 
       # https://www.freedesktop.org/software/systemd/man/journald.conf.html
-      SystemMaxUse=1000M
+      SystemMaxUse={{ systemd_journal_max_use }}
   notify: restart systemd-journald
 
 # https://askubuntu.com/a/440349
