@@ -13,10 +13,10 @@ set +e
 RESULT=$?
 set -e
 
-logger "################ BEGIN cronic run at $(date -u) ################"
+logger "BEGIN cronic run for $@"
 cat $OUT | logger
 cat $ERR | logger
-logger "################ END cronic run at $(date -u) ################"
+logger "END cronic run for $@"
 
 if [ $RESULT -ne 0 -o -s "$ERR" ]
     then
