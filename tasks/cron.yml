@@ -12,3 +12,8 @@
     src: crontab.j2
     dest: /etc/crontab
     mode: 0644
+
+- name: add MAILTO to crontab for root user
+  cronvar:
+    name: MAILTO
+    value: "{{ notification_email }}"
