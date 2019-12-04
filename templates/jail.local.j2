@@ -12,7 +12,7 @@ bantime  = 600 # 10 minutes
 # "ignoreip" can be an IP address, a CIDR mask or a DNS host. Fail2ban will not
 # ban a host which matches an address in this list. Several addresses can be
 # defined using space separator.
-ignoreip = 127.0.0.1/8 {{ whitelist_ips | join(' ') }}
+ignoreip = 127.0.0.1/8 {{ dynamic_whitelist_ips.stdout }} {{ whitelist_ips | join(' ') }}
 
 # banaction: This sets the action that will be used when the threshold is
 # reached eg /etc/fail2ban/action.d/ufw.conf

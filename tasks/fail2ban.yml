@@ -19,6 +19,12 @@
     - repeat-offender.conf
   notify: restart fail2ban
 
+- name: generate list of local server ips to add to whitelist
+  shell: >
+    ip addr | grep global | awk '/^ +inet / {split($2,a,"/"); print a[1]}' |  tr '\n' ' '
+  register: dynamic_whitelist_ips
+  changed_when: false
+
 - name: install fail2ban jail config
   template:
     src: jail.local.j2
