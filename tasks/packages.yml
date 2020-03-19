@@ -35,9 +35,41 @@
     deb: "/usr/local/src/{{ item.url | basename }}"
   with_items: "{{ deb_packages_to_install }}"
 
-- name: install speedtest
+- name: download misc binaries, check file integrity, and install into /usr/local/bin
   get_url:
-    url: "{{ speedtest_download_url }}"
-    dest: /usr/local/bin/speedtest-cli
-    checksum: "{{ speedtest_checksum }}"
+    url: "{{ item.url }}"
+    checksum: "{{ item.checksum }}"
+    dest: "/usr/local/bin/{{ item.filename }}"
     mode: 0755
+  with_items: "{{ binaries_to_install_via_url }}"
+
+- name: copy custom binaries from playbook_dir to /usr/local/bin
+  copy:
+    src: "{{ playbook_dir }}/files/custom_binaries/{{ item }}"
+    dest: /usr/local/bin/
+    mode: 0755
+  with_items: "{{ binaries_to_install_via_file }}"
+
+- name: download tarballs and check file integrity
+  get_url:
+    url: "{{ item.url }}"
+    checksum: "{{ item.tarball_checksum }}"
+    dest: "/usr/local/src/{{ item.url | basename }}"
+    mode: 0755
+  with_items: "{{ tarball_binaries_to_install_via_url }}"
+
+- name: unpack validated tarballs into /usr/local/src
+  unarchive:
+    src: "/usr/local/src/{{ item.url | basename }}"
+    dest: "/usr/local/src/"
+    remote_src: yes
+    mode: 0755
+  with_items: "{{ tarball_binaries_to_install_via_url }}"
+
+- name: copy custom binaries from tarballs to /usr/local/bin
+  copy:
+    src: "/usr/local/src/{{ item.binary_archive_src_path }}"
+    dest: "/usr/local/bin/{{ item.binary_dest_filename }}"
+    remote_src: yes
+    mode: 0755
+  with_items: "{{ tarball_binaries_to_install_via_url }}"

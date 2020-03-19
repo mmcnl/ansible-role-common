@@ -45,3 +45,16 @@
     state: stopped
   with_items: "{{ systemd_services_to_disable }}"
   ignore_errors: yes
+
+- name: ensure config file dest dirs exists
+  file:
+    path: "{{ item.dest_fullpath | dirname }}"
+    state: directory
+  with_items: "{{ config_files_to_install_via_file }}"
+
+- name: copy misc config files from playbook_dir
+  copy:
+    src: "{{ playbook_dir }}/files/config_files/{{ item.filename }}"
+    dest: "{{ item.dest_fullpath }}"
+    mode: 0644
+  with_items: "{{ config_files_to_install_via_file }}"
