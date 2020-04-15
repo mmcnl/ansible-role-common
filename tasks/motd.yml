@@ -25,3 +25,4 @@
     name: motd-news
     state: stopped
     enabled: no
+  changed_when: false

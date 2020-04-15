@@ -29,3 +29,4 @@
     path: /etc/update-motd.d/50-landscape-sysinfo
     regexp: '^\s+/usr/bin/landscape-sysinfo'
     line: "      /usr/bin/landscape-sysinfo | grep -v '1 zombie process'"
+  changed_when: false # because automatic motd updates will overwrite our changes
