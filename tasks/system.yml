@@ -54,10 +54,26 @@
 
 - name: copy misc config files from playbook_dir
   copy:
-    src: "{{ playbook_dir }}/files/config_files/{{ item.filename }}"
+    src: "{{ config_files_src_dir }}/{{ item.filename }}"
     dest: "{{ item.dest_fullpath }}"
     mode: 0644
   with_items: "{{ config_files_to_install_via_file }}"
+  when: config_files_src_dir
+
+- name: make global bashrc dir
+  file:
+    state: directory
+    path: /etc/bashrc.d
+    mode: 0755
+
+- name: Copy global bashrc files
+  copy:
+    src: "{{ item }}"
+    dest: /etc/bashrc.d/
+    owner: root
+    mode: 0755
+  with_fileglob:
+    - "{{ playbook_dir }}/files/bashrc.d/*"
 
 - name: set up logrotation for log from remote_logger plugin
   template:

@@ -34,10 +34,11 @@ deb_packages_to_skip: []
 # send emails when automatic security upgrades are performed?
 notify_unattended_upgrades: yes
 
-binaries_to_install_via_url: []
-binaries_to_install_via_file: []
+executables_to_install_via_url: []
+executables_to_install_via_file: []
 config_files_to_install_via_file: []
-tarball_binaries_to_install_via_url: []
+config_files_src_dir:
+tarball_executables_to_install_via_url: []
 
 monit_cpu_usage_max_pct: 80
 monit_cpu_usage_min_pct:
