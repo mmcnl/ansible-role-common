@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+/var/log/ansible.log {
+    monthly
+    rotate 12
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 600 root root
+ }

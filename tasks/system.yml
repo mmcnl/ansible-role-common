@@ -58,3 +58,9 @@
     dest: "{{ item.dest_fullpath }}"
     mode: 0644
   with_items: "{{ config_files_to_install_via_file }}"
+
+- name: set up logrotation for log from remote_logger plugin
+  template:
+    src: remote-logger-logrotation.j2
+    dest: "/etc/logrotate.d/ansible-remote-logger"
+    mode: 0644
