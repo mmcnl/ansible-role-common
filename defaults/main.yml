@@ -6,6 +6,7 @@ base_packages:
   - build-essential
   - chrony
   - fail2ban
+  - fasd
   - figlet # for motd banner
   - git
   - htop
