@@ -28,6 +28,11 @@
 - name: remove knockd
   when: not knockd_enabled
   block:
+    - name: Check if knockd monit config installed
+      stat:
+        path:  /etc/monit/conf.d/knockd
+      register: knockd_monit_config
+
     - name: purge knockd config files
       file:
         path: "{{ item }}"
@@ -47,3 +52,4 @@
       systemd:
         name: monit
         state: reloaded
+      when: knockd_monit_config.stat.exists
