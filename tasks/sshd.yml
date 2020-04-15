@@ -10,7 +10,7 @@
 - name: manage SSH access from unknown origins
   ufw:
     comment: manage SSH access from unknown origins
-    rule: "{{ 'deny' if knockd_enabled else 'limit' }}"
+    rule: "{{ 'deny' if knockd_enabled else 'allow' }}"
     port: "{{ sshd_port }}"
     proto: tcp
   notify: restart ufw
